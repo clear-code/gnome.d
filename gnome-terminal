@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+# -*- ruby -*-
+
+@gconftool = "gconftool"
+key_prefix = '/apps/gnome-terminal/'
+
+[
+ %w(boolean profiles/Default/use_theme_colors false),
+ %w(string profiles/Default/foreground_color #F5DEB3),
+ %w(string profiles/Default/background_color #2F4F4F),
+
+ %w(string profiles/Default/scrollbar_position left),
+ %w(boolean profiles/Default/scrollback_unlimited true),
+ %w(boolean profiles/Default/default_show_menubar false),
+
+ %w(boolean profiles/Default/use_custom_default_size true),
+ %w(int profiles/Default/default_size_columns 80),
+ %w(int profiles/Default/default_size_rows 51),
+
+ %w(string keybindings/new_tab <Control><Alt>o),
+ %w(string keybindings/next_tab <Control><Alt>n),
+ %w(string keybindings/prev_tab <Control><Alt>p),
+].each do |value_type, key, *value|
+  args = [
+    "--type=#{value_type}",
+    '--set',
+    "#{key_prefix}#{key}",
+    value.join(" "),
+  ]
+  system(@gconftool, *args)
+end
